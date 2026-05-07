@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fast Food - Ordini Ristoratore</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/responsive.css">
+  <link rel="stylesheet" href="../assets/modern-theme.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      min-height: 100vh;
+    }
+    .sidebar {
+      width: clamp(180px, 22vw, 250px);
+      flex: 0 0 clamp(180px, 22vw, 250px);
+      background: #fff;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      position: sticky;
+      top: 0;
+      align-self: flex-start;
+      height: 100vh;
+      overflow-y: auto;
+    }
+    .sidebar-header {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    .sidebar-logo-link {
+      display: inline-block;
+      transition: transform 0.2s ease;
+    }
+    .sidebar-logo-link:hover {
+      transform: scale(1.03);
+    }
+    .sidebar-header img {
+      max-width: 150px;
+    }
+    .sidebar a.nav-link {
+      color: #555;
+      padding: 0.75rem 1rem;
+      border-radius: 0.5rem;
+      margin-bottom: 0.5rem;
+      text-decoration: none;
+    }
+    .sidebar a.nav-link.active {
+      background-color: #0d6efd;
+      color: #fff;
+    }
+    .sidebar a.nav-link:hover {
+      background-color: #0b5ed7;
+      color: #fff;
+    }
+    .main-content {
+      flex: 1;
+      padding: 2rem;
+      overflow-y: auto;
+    }
+    h2 {
+      color: #0d6efd;
+      margin-bottom: 1.5rem;
+    }
+    .order-card {
+      border: 1px solid #d8e1eb;
+      border-radius: 0.75rem;
+      padding: 1.1rem 1.15rem;
+      margin-bottom: 1rem;
+      background: #fff;
+      box-shadow: 0 6px 14px rgba(13, 110, 253, 0.07);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .order-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(13, 110, 253, 0.12);
+    }
+    .order-title {
+      font-size: 1.2rem;
+      color: #0d2f6f;
+      margin-bottom: 0.25rem;
+    }
+    .order-meta {
+      margin: 0;
+      color: #6c757d;
+      font-size: 0.95rem;
+    }
+    .order-info {
+      margin-top: 0.75rem;
+    }
+    .order-info p {
+      margin: 0.25rem 0;
+    }
+    .status-badge {
+      display: inline-block;
+      border-radius: 999px;
+      padding: 0.2rem 0.65rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: capitalize;
+      letter-spacing: 0.2px;
+    }
+    .status-ordinato,
+    .status-in-preparazione {
+      background-color: #fff4d6;
+      color: #8f5f00;
+    }
+    .status-in-consegna {
+      background-color: #e7f1ff;
+      color: #0d58ca;
+    }
+    .status-consegnato {
+      background-color: #ddf6e8;
+      color: #0f5132;
+    }
+    .status-annullato {
+      background-color: #fde2e1;
+      color: #842029;
+    }
+    .order-details {
+      margin-top: 0.75rem;
+      border-top: 1px dashed #d8e1eb;
+      padding-top: 0.7rem;
+    }
+    .order-details summary {
+      cursor: pointer;
+      color: #0d6efd;
+      font-weight: 600;
+    }
+    .meals-list {
+      margin: 0.75rem 0 0;
+      padding-left: 1rem;
+    }
+    .meal-item {
+      margin-bottom: 0.45rem;
+    }
+    .order-price-row { display:inline-flex; align-items:center; gap:.35rem; flex-wrap:wrap; }
+    .order-old-price { text-decoration:line-through; color:#7b8088; }
+    .order-price-arrow { color:#6c757d; font-weight:700; }
+    .order-new-price { color:#146c43; font-weight:800; }
+    .order-offer-badge { background:rgba(25,135,84,.15); color:#157347; border-radius:999px; padding:.1rem .45rem; font-size:.75rem; font-weight:700; }
+    .order-actions {
+      margin-top: 0.75rem;
+    }
+  </style>
+  <link rel="icon" type="image/png" href="../assets/Favicon.png">
+  <script src="../assets/auth.js"></script>
+</head>
+<body>
+  <script>
+    window.ensureAuthenticatedRole("ristoratore");
+  </script>
+
+<div class="sidebar">
+  <div class="sidebar-header">
+    <a href="../index.html" class="sidebar-logo-link" aria-label="Torna alla home">
+      <img src="../assets/logo.png" alt="FastFood Logo" />
+      </a>
+  </div>
+  <a href="home.html" class="nav-link">Dashboard</a>
+  <a href="ordini.html" class="nav-link active">Ordini</a>
+  <a href="gestioneRistorante.html" class="nav-link">Gestisci Ristorante</a>
+    <a href="gestioneMenù.html" class="nav-link">Gestione Menù</a>
+    <a href="gestioneBacheca.html" class="nav-link">Gestione Bacheca</a>
+  <a href="piattiGenerici.html" class="nav-link">Aggiungi Piatto Generico</a>
+  <a href="piattoPersonalizzato.html" class="nav-link">Aggiungi Piatto Personalizzato</a>
+  <a href="modificaPiattoPersonalizzato.html" class="nav-link">Modifica Piatto Personalizzato</a>
+  <a href="statistiche.html" class="nav-link">Statistiche</a>
+  <a href="../profilo.html" class="nav-link">Profilo</a>
+  <a href="../logout.html" class="nav-link">Logout</a>
+</div>
+
+<div class="main-content">
+  <h2>Ordini Ristoratore</h2>
+
+  <br><hr><br>
+
+  <h3>Ordini Attivi</h3>
+  <div id="activeOrders"></div>
+
+  <br><hr><br>
+
+  <h3>Storico Ordini</h3>
+  <div id="historyOrders"></div>
+</div>
+
+<script>
+  var apiBase = "http://localhost:3000";
+  var token = localStorage.getItem("token");
+
+  function estraiTimestampOrdine(order) {
+    if (!order || !order.data_ordine) return 0;
+
+    var dataOrdineRaw = String(order.data_ordine).trim();
+
+    var matchDataIt = dataOrdineRaw.match(
+      /^(\d{2})\/(\d{2})\/(\d{4})\s*-\s*(\d{2}):(\d{2})$/
+    );
+
+    if (matchDataIt) {
+      var giorno = Number(matchDataIt[1]);
+      var mese = Number(matchDataIt[2]) - 1;
+      var anno = Number(matchDataIt[3]);
+      var ore = Number(matchDataIt[4]);
+      var minuti = Number(matchDataIt[5]);
+
+      return new Date(anno, mese, giorno, ore, minuti).getTime();
+    }
+
+    var timestamp = new Date(dataOrdineRaw).getTime();
+    return Number.isNaN(timestamp) ? 0 : timestamp;
+  }
+
+  function formatEuro(value) {
+    return "€" + Number(value || 0).toFixed(2);
+  }
+
+  function renderPrezzoOrdine(meal, prezzoUnitario) {
+    var originale = Number(meal.prezzo_originale || 0);
+    var inOfferta = Boolean(meal.in_offerta && originale > prezzoUnitario);
+    if (!inOfferta) return formatEuro(prezzoUnitario);
+    return `<span class="order-price-row"><span class="order-old-price">${formatEuro(originale)}</span><span class="order-price-arrow">→</span><span class="order-new-price">${formatEuro(prezzoUnitario)}</span><span class="order-offer-badge">-${Number(meal.sconto_percentuale || 0)}%</span></span>`;
+  }
+
+  function renderSubtotaleOrdine(meal, quantita, subtotale) {
+    var originale = Number(meal.prezzo_originale || 0);
+    var inOfferta = Boolean(meal.in_offerta && originale > 0);
+    if (!inOfferta) return formatEuro(subtotale);
+    var subtotaleOriginale = quantita * originale;
+    return `<span class="order-price-row"><span class="order-old-price">${formatEuro(subtotaleOriginale)}</span><span class="order-price-arrow">→</span><span class="order-new-price">${formatEuro(subtotale)}</span></span>`;
+  }
+
+  function normalizzaClasseStato(stato) {
+    return String(stato || "")
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, "-")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
+  }
+
+  function creaDettagliPasti(order) {
+    if (!Array.isArray(order.meals) || order.meals.length === 0) {
+      return "<p class='text-muted mb-0'>Nessun piatto disponibile.</p>";
+    }
+
+    return `
+      <ul class="meals-list">
+        ${order.meals.map(meal => {
+          var quantita = Number(meal.quantita || 0);
+          var prezzoUnitario = Number(meal.prezzo_unitario || 0);
+          var subtotale = quantita * prezzoUnitario;
+          return `
+            <li class="meal-item">
+              <strong>${meal.nome || "Piatto non specificato"}</strong><br>
+              Quantità: ${quantita} • Prezzo unitario: ${renderPrezzoOrdine(meal, prezzoUnitario)} • Subtotale: ${renderSubtotaleOrdine(meal, quantita, subtotale)}
+            </li>
+          `;
+        }).join("")}
+      </ul>
+    `;
+  }
+
+  function creaCardOrdine(order) {
+    var classeStato = normalizzaClasseStato(order.stato);
+    var distanza = order.distanza_km ? `${order.distanza_km} km` : "N/D";
+    var costoConsegna = formatEuro(order.costo_consegna);
+    var tempoAttesa = order.tempo_attesa ?? "N/D";
+
+    var consegnaDettagli = "";
+    if (order.metodo_consegna === "Consegna a Domicilio") {
+      consegnaDettagli = `
+        <p>Indirizzo consegna: ${order.indirizzo_consegna || "Non specificato"}</p>
+        <p>Distanza: ${distanza}</p>
+        <p>Costo consegna: ${costoConsegna}</p>
+      `;
+    }
+
+    var orderDiv = document.createElement("div");
+    orderDiv.className = "order-card";
+    orderDiv.innerHTML = `
+      <h4 class="order-title">Ordine #${order._id}</h4>
+      <p class="order-meta">Cliente: ${order.cliente_nome || "Sconosciuto"}</p>
+      <div class="order-info">
+        <p>Totale: ${formatEuro(order.totale)}</p>
+        <p>Data ordine: ${order.data_ordine || "N/D"}</p>
+        <p>Metodo consegna: ${order.metodo_consegna || "N/D"}</p>
+        ${consegnaDettagli}
+        <p>Tempo di attesa: ${tempoAttesa} min</p>
+        <p>Stato: <span class="status-badge status-${classeStato}">${order.stato || "N/D"}</span></p>
+      </div>
+      <details class="order-details">
+        <summary>Vedi dettagli ordine</summary>
+        ${creaDettagliPasti(order)}
+      </details>
+      <div class="order-actions"></div>
+    `;
+
+    return orderDiv;
+  }
+
+  async function fetchConControlloToken(url, options = {}) {
+    var token = localStorage.getItem("token");
+
+    if (!token) {
+      window.handleAuthIssue("sessione non valida");
+      return;
+    }
+
+    options.headers = options.headers || {};
+    options.headers["Authorization"] = "Bearer " + token;
+
+    try {
+      let response = await fetch(url, options);
+
+      if (response.status === 401) {
+        window.handleAuthIssue("sessione non valida");
+      }
+
+      return response;
+    } catch (error) {
+      console.error("Errore nella richiesta API:", error);
+      return null;
+    }
+  }
+
+  async function caricaOrdiniRistoratore() {
+    try {
+      var response = await fetchConControlloToken(apiBase + "/orders");
+
+      if (!response || !response.ok) {
+        throw new Error("Impossibile recuperare gli ordini.");
+      }
+
+      var orders = await response.json();
+      var activeOrders = document.getElementById("activeOrders");
+      var historyOrders = document.getElementById("historyOrders");
+
+      activeOrders.innerHTML = "";
+      historyOrders.innerHTML = "";
+
+      if (!Array.isArray(orders) || orders.length === 0) {
+        activeOrders.innerHTML = "<p class=\"text-muted\">Nessun ordine attivo.</p>";
+        historyOrders.innerHTML = "<p class=\"text-muted\">Nessun ordine nello storico.</p>";
+        return;
+      }
+
+      var ordiniOrdinatiPerDataDesc = [...orders].sort((a, b) => {
+        return estraiTimestampOrdine(b) - estraiTimestampOrdine(a);
+      });
+
+      var activeOrdersList = ordiniOrdinatiPerDataDesc.filter(order =>
+        ["ordinato", "in preparazione", "in consegna"].includes(order.stato)
+      );
+
+      var historyOrdersList = ordiniOrdinatiPerDataDesc.filter(order =>
+        !["ordinato", "in preparazione", "in consegna"].includes(order.stato)
+      );
+
+      var ordiniConsegnatiConfermatiDalCliente = historyOrdersList.filter(order =>
+        order.metodo_consegna === "Consegna a Domicilio" && order.notifica_ristoratore_consegna === true
+      );
+
+      if (ordiniConsegnatiConfermatiDalCliente.length > 0) {
+        alert("Confermata la corretta consegna a Domicilio al cliente.");
+        confermaLetturaNotificheConsegna();
+      }
+
+      activeOrdersList.forEach(order => {
+        var orderDiv = creaCardOrdine(order);
+
+        if (["ordinato", "in preparazione"].includes(order.stato)) {
+          var updateBtn = document.createElement("button");
+          updateBtn.className = "btn btn-primary";
+          updateBtn.innerText = "Avanza Stato";
+          updateBtn.onclick = () => cambiaStatoOrdine(order._id, order.stato, order.metodo_consegna);
+          orderDiv.querySelector(".order-actions").appendChild(updateBtn);
+        }
+
+        activeOrders.appendChild(orderDiv);
+      });
+
+      historyOrdersList.forEach(order => {
+        var orderDiv = creaCardOrdine(order);
+
+        if (historyOrders.children.length > 0) {
+          var separator = document.createElement("hr");
+          historyOrders.appendChild(separator);
+        }
+
+        historyOrders.appendChild(orderDiv);
+      });
+
+    } catch (err) {
+      console.error("Errore nel caricamento degli ordini:", err);
+    }
+  }
+
+  async function cambiaStatoOrdine(orderId, statoAttuale, metodoConsegna) {
+    try {
+      var response = await fetchConControlloToken(`${apiBase}/orders/${orderId}`, {
+        method: "PUT",
+        headers: {
+          "Authorization": "Bearer " + token,
+          "Content-Type": "application/json"
+        }
+      });
+
+      if (!response.ok) throw new Error("Errore nella modifica dello stato.");
+
+      var updatedOrder = null;
+      var responseText = await response.text();
+
+      if (responseText) {
+        try {
+          updatedOrder = JSON.parse(responseText);
+        } catch (parseError) {
+          console.warn("Risposta non JSON:", parseError);
+        }
+      }
+
+      if (
+        metodoConsegna === "Consegna a Domicilio" &&
+        statoAttuale === "in preparazione"
+      ) {
+        alert("L'ordine è in fase di consegna al cliente.");
+      } else if (updatedOrder && updatedOrder.stato === "consegnato") {
+        alert("Ordine consegnato correttamente al cliente.");
+      } else if (
+        statoAttuale === "in preparazione" &&
+        metodoConsegna === "Ritiro in ristorante" &&
+        (!updatedOrder || !updatedOrder.stato)
+      ) {
+        alert("Ordine consegnato correttamente al cliente.");
+      }
+
+      caricaOrdiniRistoratore();
+    } catch (err) {
+      console.error("Errore:", err);
+    }
+  }
+
+  async function confermaLetturaNotificheConsegna() {
+    try {
+      await fetchConControlloToken(`${apiBase}/orders/notifiche-consegna/ack`, {
+        method: "PUT",
+        headers: {
+          "Authorization": "Bearer " + token,
+          "Content-Type": "application/json"
+        }
+      });
+    } catch (err) {
+      console.error("Errore nella conferma lettura notifiche consegna:", err);
+    }
+  }
+
+  caricaOrdiniRistoratore();
+</script>
+</body>
+</html>

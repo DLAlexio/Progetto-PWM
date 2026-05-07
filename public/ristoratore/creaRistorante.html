@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fast Food - Crea Ristorante</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/responsive.css">
+  <link rel="stylesheet" href="../assets/modern-theme.css">
+  <link rel="icon" type="image/png" href="../assets/Favicon.png">
+
+  <script src="../assets/auth.js"></script>
+
+  <style>
+    :root {
+      --brand-primary: #0d6efd;
+      --brand-accent: #fecd4c;
+      --surface: #ffffff;
+      --muted: #6c757d;
+      --text: #1f2937;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(180deg, #f3f8ff 0%, #eefbf8 100%);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--text);
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: clamp(180px, 22vw, 250px);
+      flex: 0 0 clamp(180px, 22vw, 250px);
+      background-color: #ffffff;
+      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      position: sticky;
+      top: 0;
+      align-self: flex-start;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .sidebar-header {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .sidebar-logo-link {
+      display: inline-block;
+      transition: transform 0.2s ease;
+    }
+
+    .sidebar-logo-link:hover {
+      transform: scale(1.03);
+    }
+
+    .sidebar-header img {
+      max-width: 150px;
+    }
+
+    .sidebar a.nav-link {
+      color: #555;
+      padding: 0.75rem 1rem;
+      border-radius: 0.5rem;
+      margin-bottom: 0.5rem;
+      text-decoration: none;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .sidebar a.nav-link.active {
+      background-color: #0d6efd;
+      color: #fff;
+    }
+
+    .sidebar a.nav-link:hover {
+      background-color: #0b5ed7;
+      color: #fff;
+    }
+
+    .main-content {
+      flex: 1;
+      padding: clamp(1.25rem, 2.5vw, 2.25rem);
+    }
+
+    .page-shell {
+      max-width: 920px;
+      margin: 0 auto;
+    }
+
+    .hero-card {
+      border-radius: 1rem;
+      border: 1px solid rgba(110, 168, 254, 0.28);
+      background: linear-gradient(120deg, #ffffff 0%, #f4f9ff 100%);
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+    }
+
+    .form-card {
+      border-radius: 1rem;
+      border: 1px solid rgba(110, 168, 254, 0.3);
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+    }
+
+    .form-card .card-header {
+      background: linear-gradient(120deg, #0d6efd 0%, #6ea8fe 100%);
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .form-control {
+      border-radius: 0.7rem;
+      border-color: #d6e6ff;
+    }
+
+    .form-control:focus {
+      border-color: #6ea8fe;
+      box-shadow: 0 0 0 0.18rem rgba(13, 110, 253, 0.16);
+    }
+
+    .form-control.is-invalid,
+    .form-control.is-invalid:focus {
+      border-color: #dc3545;
+      box-shadow: 0 0 0 0.18rem rgba(220, 53, 69, 0.18);
+    }
+
+    textarea.form-control {
+      min-height: 120px;
+    }
+
+    .btn-create {
+      background: linear-gradient(120deg, #0d6efd 0%, #6ea8fe 100%);
+      color: #fff;
+      border: none;
+      border-radius: 0.72rem;
+      font-weight: 600;
+      padding: 0.6rem 1rem;
+      box-shadow: 0 8px 18px rgba(13, 110, 253, 0.2);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .btn-create:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 20px rgba(13, 110, 253, 0.24);
+      color: #fff;
+    }
+
+    #formFeedback .alert {
+      border-radius: 0.75rem;
+    }
+  </style>
+</head>
+
+<body>
+<script>
+  window.ensureAuthenticatedRole("ristoratore");
+</script>
+
+<div class="sidebar">
+  <div class="sidebar-header">
+    <a href="../index.html" class="sidebar-logo-link" aria-label="Torna alla home">
+      <img src="../assets/logo.png" alt="FastFood Logo" />
+    </a>
+  </div>
+
+  <a href="home.html" class="nav-link">Dashboard</a>
+  <a href="ordini.html" class="nav-link">Ordini</a>
+  <a href="gestioneRistorante.html" class="nav-link active">Gestisci Ristorante</a>
+  <a href="gestioneMenù.html" class="nav-link">Gestione Menù</a>
+    <a href="gestioneBacheca.html" class="nav-link">Gestione Bacheca</a>
+  <a href="piattiGenerici.html" class="nav-link">Aggiungi Piatto Generico</a>
+  <a href="piattoPersonalizzato.html" class="nav-link">Aggiungi Piatto Personalizzato</a>
+  <a href="modificaPiattoPersonalizzato.html" class="nav-link">Modifica Piatto Personalizzato</a>
+  <a href="statistiche.html" class="nav-link">Statistiche</a>
+  <a href="../profilo.html" class="nav-link">Profilo</a>
+  <a href="../logout.html" class="nav-link">Logout</a>
+</div>
+
+<div class="main-content">
+  <div class="page-shell">
+
+    <div class="card hero-card mb-4">
+      <div class="card-body p-4">
+        <h2 class="h3">Crea il tuo Ristorante</h2>
+        <p class="text-muted">Inserisci i dati principali del tuo ristorante per pubblicarlo.</p>
+      </div>
+    </div>
+
+    <div class="card form-card">
+      <div class="card-header">Informazioni Ristorante</div>
+      <div class="card-body">
+        <div id="formFeedback" class="mb-3"></div>
+
+        <form id="restaurantForm">
+          <div class="mb-3">
+            <label class="form-label">Nome *</label>
+            <input type="text" id="name" class="form-control" placeholder="es. Trattoria del Porto" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Indirizzo *</label>
+            <input type="text" id="address" class="form-control" placeholder="es. Via Garibaldi 42, Genova" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Telefono *</label>
+            <input type="tel" id="numero_di_telefono" class="form-control" placeholder="es. +39 010 1234567" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Partita IVA *</label>
+            <input type="text" id="piva" class="form-control" placeholder="es. 08765430961" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Descrizione</label>
+            <textarea id="description" class="form-control" placeholder="es. Specialità di pesce fresco con consegna serale in centro città"></textarea>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">URL Immagine *</label>
+            <input type="url" id="image" class="form-control" placeholder="es. https://images.example.com/ristoranti/trattoria-porto.jpg" required>
+          </div>
+
+          <button type="submit" class="btn btn-create">Crea Ristorante</button>
+        </form>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  var apiBase = window.location.origin || "http://localhost:3000";
+  var userId = localStorage.getItem("userId");
+  var formEl = document.getElementById("restaurantForm");
+  var feedbackBox = document.getElementById("formFeedback");
+  var nameInput = document.getElementById("name");
+  var addressInput = document.getElementById("address");
+  var phoneInput = document.getElementById("numero_di_telefono");
+  var pivaInput = document.getElementById("piva");
+  var descriptionInput = document.getElementById("description");
+  var imageInput = document.getElementById("image");
+  var initialPlaceholders = {
+    name: nameInput.placeholder,
+    address: addressInput.placeholder,
+    numero_di_telefono: phoneInput.placeholder,
+    piva: pivaInput.placeholder,
+    description: descriptionInput.placeholder,
+    image: imageInput.placeholder
+  };
+
+  function mostraFeedback(tipo, messaggio) {
+    feedbackBox.innerHTML =
+      '<div class="alert alert-' + tipo + '" role="alert">' +
+      messaggio +
+      "</div>";
+  }
+
+  function resetCampo(inputEl, key) {
+    inputEl.classList.remove("is-invalid");
+    inputEl.placeholder = initialPlaceholders[key];
+  }
+
+  function evidenziaCampoErrore(inputEl, key, testoPlaceholderErrore) {
+    inputEl.classList.add("is-invalid");
+    if (testoPlaceholderErrore) {
+      inputEl.value = "";
+      inputEl.placeholder = testoPlaceholderErrore;
+    }
+    inputEl.focus();
+  }
+
+  function resetValidazione() {
+    resetCampo(nameInput, "name");
+    resetCampo(addressInput, "address");
+    resetCampo(phoneInput, "numero_di_telefono");
+    resetCampo(pivaInput, "piva");
+    resetCampo(descriptionInput, "description");
+    resetCampo(imageInput, "image");
+  }
+
+  function trovaCampoDaErrore(messaggio) {
+    var testo = (messaggio || "").toLowerCase();
+    if (testo.includes("nome") || testo.includes("name")) return "name";
+    if (testo.includes("indirizzo") || testo.includes("address")) return "address";
+    if (testo.includes("telefono") || testo.includes("numero_di_telefono")) return "numero_di_telefono";
+    if (testo.includes("partita iva") || testo.includes("piva") || testo.includes("iva")) return "piva";
+    if (testo.includes("descrizione") || testo.includes("description")) return "description";
+    if (testo.includes("immagine") || testo.includes("image") || testo.includes("url")) return "image";
+    return null;
+  }
+
+  function validaForm() {
+    resetValidazione();
+    var name = nameInput.value.trim();
+    var address = addressInput.value.trim();
+    var phone = phoneInput.value.trim();
+    var piva = pivaInput.value.trim();
+    var description = descriptionInput.value.trim();
+    var image = imageInput.value.trim();
+
+    if (!name || name.length < 3) {
+      var msgNome = "Il nome deve contenere almeno 3 caratteri.";
+      evidenziaCampoErrore(nameInput, "name", "Inserisci almeno 3 caratteri");
+      mostraFeedback("danger", msgNome);
+      alert(msgNome);
+      return false;
+    }
+
+    if (!address || address.length < 8 || !/\d/.test(address)) {
+      var msgIndirizzo = "L'indirizzo è obbligatorio e deve contenere via/piazza e numero civico.";
+      evidenziaCampoErrore(addressInput, "address", "es. Via Roma 10, Milano");
+      mostraFeedback("danger", msgIndirizzo);
+      alert(msgIndirizzo);
+      return false;
+    }
+
+    if (!/^\+?[0-9\s-]{8,15}$/.test(phone)) {
+      var msgTelefono = "Il numero di telefono deve contenere da 8 a 15 cifre (puoi usare +, spazi o trattini).";
+      evidenziaCampoErrore(phoneInput, "numero_di_telefono", "es. +39 333 1234567");
+      mostraFeedback("danger", msgTelefono);
+      alert(msgTelefono);
+      return false;
+    }
+
+    if (!/^\d{11}$/.test(piva)) {
+      var msgPiva = "La partita IVA deve essere composta da 11 cifre numeriche.";
+      evidenziaCampoErrore(pivaInput, "piva", "Inserisci 11 cifre");
+      mostraFeedback("danger", msgPiva);
+      alert(msgPiva);
+      return false;
+    }
+
+    if (description && (description.length < 15 || description.length > 500)) {
+      var msgDescrizione = "La descrizione, se inserita, deve avere tra 15 e 500 caratteri.";
+      evidenziaCampoErrore(descriptionInput, "description", "Descrizione tra 15 e 500 caratteri");
+      mostraFeedback("danger", msgDescrizione);
+      alert(msgDescrizione);
+      return false;
+    }
+
+    try {
+      var imageUrl = new URL(image);
+      if (!["http:", "https:"].includes(imageUrl.protocol)) {
+        throw new Error("Protocollo non valido");
+      }
+    } catch (_) {
+      var msgImmagine = "L'URL immagine deve essere valido e iniziare con http:// oppure https://.";
+      evidenziaCampoErrore(imageInput, "image", "es. https://example.com/foto.jpg");
+      mostraFeedback("danger", msgImmagine);
+      alert(msgImmagine);
+      return false;
+    }
+
+    return true;
+  }
+
+  async function fetchConControlloToken(url, options = {}) {
+    var token = localStorage.getItem("token");
+
+    if (!token) {
+      window.handleAuthIssue("sessione non valida");
+      return null;
+    }
+
+    options.headers = options.headers || {};
+    options.headers["Authorization"] = "Bearer " + token;
+
+    try {
+      let response = await fetch(url, options);
+
+      if (response.status === 401) {
+        window.handleAuthIssue("sessione non valida");
+      }
+
+      return response;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  }
+
+  formEl.addEventListener("submit", async function(e) {
+    e.preventDefault();
+    if (!validaForm()) {
+      return;
+    }
+
+    var payload = {
+      name: nameInput.value.trim(),
+      address: addressInput.value.trim(),
+      numero_di_telefono: phoneInput.value.trim(),
+      piva: pivaInput.value.trim(),
+      description: descriptionInput.value.trim(),
+      image: imageInput.value.trim(),
+      ristoratore_id: userId
+    };
+
+    try {
+      var response = await fetchConControlloToken(apiBase + "/restaurants", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response) {
+        var erroreConnessione = "Creazione non riuscita: impossibile contattare il server. Riprova tra qualche minuto.";
+        mostraFeedback("danger", erroreConnessione);
+        alert(erroreConnessione);
+        return;
+      }
+
+      var data = {};
+      var rawBody = await response.text();
+      if (rawBody) {
+        try {
+          data = JSON.parse(rawBody);
+        } catch (_) {
+          data = { message: rawBody };
+        }
+      }
+
+      if (!response.ok) {
+        var messaggioErrore = data.error || data.message || "Creazione non riuscita: verifica i dati inseriti e riprova.";
+        var campoErrore = trovaCampoDaErrore(messaggioErrore);
+        if (campoErrore === "name") evidenziaCampoErrore(nameInput, "name", "Correggi il nome inserito");
+        if (campoErrore === "address") evidenziaCampoErrore(addressInput, "address", "Correggi l'indirizzo inserito");
+        if (campoErrore === "numero_di_telefono") evidenziaCampoErrore(phoneInput, "numero_di_telefono", "Correggi il telefono inserito");
+        if (campoErrore === "piva") evidenziaCampoErrore(pivaInput, "piva", "Correggi la partita IVA inserita");
+        if (campoErrore === "description") evidenziaCampoErrore(descriptionInput, "description", "Correggi la descrizione inserita");
+        if (campoErrore === "image") evidenziaCampoErrore(imageInput, "image", "Correggi l'URL immagine inserito");
+        mostraFeedback("danger", messaggioErrore);
+        alert("Errore durante la creazione del ristorante: " + messaggioErrore);
+        return;
+      }
+
+      var messaggioSuccesso = "Ristorante creato con successo! Clicca Qui per essere reindirizzato alla tua dashboard.";
+      mostraFeedback("success", messaggioSuccesso);
+      alert(messaggioSuccesso);
+      setTimeout(function() {
+        window.location.href = "home.html";
+      }, 1200);
+
+    } catch (err) {
+      var erroreImprevisto = "Errore durante la creazione del ristorante. Riprova più tardi.";
+      mostraFeedback("danger", erroreImprevisto);
+      alert(erroreImprevisto);
+    }
+  });
+</script>
+
+</body>
+</html>
