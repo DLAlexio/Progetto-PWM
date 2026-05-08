@@ -12,6 +12,16 @@ function parseCsv(value) {
     .filter(Boolean);
 }
 
+function normalizeBoolean(value, fieldName) {
+  if (value === undefined) return undefined;
+  if (typeof value === "boolean") return value;
+  if (typeof value === "string") {
+    if (value === "true") return true;
+    if (value === "false") return false;
+  }
+  throw new Error(`${fieldName} deve essere boolean`);
+}
+
 // GET /meals - Restituisce tutti i piatti, con filtri opzionali
 mealsRouter.get("/", async (req, res) => {
   try {
@@ -214,7 +224,12 @@ mealsRouter.post("/", authenticateUser, authorizeRistoratore, async (req, res) =
       return res.status(400).json({ error: "tempo_preparazione richiesto e deve essere un numero >= 0" });
     }
 
-    const isInOfferta = Boolean(in_offerta);
+    let isInOfferta = false;
+    try {
+      isInOfferta = normalizeBoolean(in_offerta, "in_offerta") ?? false;
+    } catch (error) {
+      return res.status(400).json({ error: error.message });
+    }
     const randomDiscount = isInOfferta ? Math.floor(Math.random() * 41) + 10 : 0;
     const discountedPrice = isInOfferta
       ? Number((prezzo * (1 - randomDiscount / 100)).toFixed(2))
@@ -298,6 +313,14 @@ mealsRouter.put("/:id", authenticateUser, authorizeRistoratore, async (req, res)
     for (const field of allowedFields) {
       if (req.body[field] !== undefined) {
         updateFields[field] = req.body[field];
+      }
+    }
+
+    if (updateFields.in_offerta !== undefined) {
+      try {
+        updateFields.in_offerta = normalizeBoolean(updateFields.in_offerta, "in_offerta");
+      } catch (error) {
+        return res.status(400).json({ error: error.message });
       }
     }
 
