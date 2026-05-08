@@ -126,7 +126,7 @@ ordersRouter.post("/", authenticateUser, async (req, res) => {
       return res.status(400).json({ error: "meals deve essere un array non vuoto" });
     }
 
-    if (!["Ritiro in ristorante", "Consegna a Domicilio"].includes(metodo_consegna)) {
+    if (!["Ritiro in Ristorante", "Consegna a Domicilio"].includes(metodo_consegna)) {
       return res.status(400).json({ error: "metodo_consegna non valido" });
     }
 

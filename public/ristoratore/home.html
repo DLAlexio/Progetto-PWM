@@ -100,7 +100,7 @@
       font-weight: 600;
       margin-bottom: 0.9rem;
     }
-    /* EMPTY STATE */
+
     .empty-state-wrapper {
       flex: 1;
       display: flex;
@@ -215,7 +215,7 @@
       try {
         let response = await fetch(url, options);
 
-        if (response.status === 401) { // token scaduto o invalido
+        if (response.status === 401) { 
             window.handleAuthIssue("sessione non valida");
           }
 
@@ -343,9 +343,9 @@
           ? order.meals.reduce((totale, meal) => totale + (Number(meal.quantita) || 0), 0)
           : 0;
         var tempoAttesa = Number.isFinite(order.tempo_attesa) ? order.tempo_attesa : null;
-        var indirizzoConsegna = order.metodo_consegna === "Consegna a domicilio"
+        var indirizzoConsegna = order.metodo_consegna === "Consegna a Domicilio"
           ? (order.indirizzo_consegna || "Non disponibile")
-          : "Ritiro presso il ristorante";
+          : "Ritiro presso il Ristorante";
 
         var orderDiv = document.createElement("div");
         orderDiv.className = "mb-3 p-2 border rounded";

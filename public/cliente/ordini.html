@@ -213,7 +213,7 @@
       try {
         let response = await fetch(url, options);
 
-        if (response.status === 401) { // token scaduto o invalido
+        if (response.status === 401) { 
           window.handleAuthIssue("sessione non valida");
         }
 
