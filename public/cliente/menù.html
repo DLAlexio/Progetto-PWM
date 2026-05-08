@@ -197,21 +197,37 @@
     async function caricaMenu() {
       try {
         var resRisto = await fetchConControlloToken(apiBase + "/restaurants/" + restaurantId);
+        if (!resRisto || !resRisto.ok) {
+          throw new Error("Impossibile recuperare il ristorante. Stato: " + (resRisto ? resRisto.status : "nessuna risposta"));
+        }
+
         restaurant = await resRisto.json();
 
         if (restaurant.name) {
           document.getElementById("restaurantName").textContent = "Menù di " + restaurant.name;
         }
+
         if (restaurant.menu && Array.isArray(restaurant.menu) && restaurant.menu.length > 0) {
-          var promises = restaurant.menu.map(function(idMeal) {
-            return fetchConControlloToken(apiBase + "/meals/" + idMeal).then(function(res) {
-              return res.json();
-            });
-          });
-          allDishes = await Promise.all(promises);
+          var mealResponses = await Promise.all(restaurant.menu.map(function(idMeal) {
+            return fetchConControlloToken(apiBase + "/meals/" + idMeal);
+          }));
+
+          allDishes = [];
+          for (var i = 0; i < mealResponses.length; i++) {
+            var mealRes = mealResponses[i];
+            if (!mealRes || !mealRes.ok) {
+              console.warn("Piatto non caricato:", restaurant.menu[i], mealRes ? mealRes.status : "nessuna risposta");
+              continue;
+            }
+            var meal = await mealRes.json();
+            if (meal && typeof meal === "object") {
+              allDishes.push(meal);
+            }
+          }
         } else {
           allDishes = [];
         }
+
         generaCategorie(allDishes);
         mostraPiatti(allDishes);
       } catch (err) {
@@ -230,7 +246,7 @@
         return;
       }
       lista.forEach(function(p) {
-        p.strInstructions = p.strInstructions.replace(/'/g, "").trim(); //l'apostrofo da noia durante il passaggio della descrizione
+        p.strInstructions = String(p.strInstructions || "").replace(/'/g, "").trim(); //l'apostrofo da noia durante il passaggio della descrizione
         var col = document.createElement("div");
         col.className = "col-md-4";
         col.innerHTML = '<div class="card meal-card h-100">' +
