@@ -398,6 +398,4 @@ usersRouter.put("/me", authenticateUser, async (req, res) => { ... });
 ```
 # **Video Dimostrativo (DropBox):**
 
-In questa sezione puoi inserire/aggiornare il link al video dimostrativo del progetto:
-
-- 🎬 [Guarda il video dimostrativo su DropBox](https://www.dropbox.com/scl/fi/em4aq2p6ikj2sbubk7pk9/Video_Dimostrativo_Progettuale.mp4?rlkey=1iedgxqn8iysdwqbggfh0rdyf&st=5f47itk1&dl=0)
+- 🎬 [Guarda il mio video dimostrativo del progetto su DropBox](https://www.dropbox.com/scl/fi/em4aq2p6ikj2sbubk7pk9/Video_Dimostrativo_Progettuale.mp4?rlkey=1iedgxqn8iysdwqbggfh0rdyf&st=5f47itk1&dl=0)
