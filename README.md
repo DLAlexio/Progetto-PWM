@@ -398,8 +398,4 @@ usersRouter.put("/me", authenticateUser, async (req, res) => { ... });
 ```
 ## **Video Dimostrativo Progetto:**
 
-<video style= "video-align: center" controls preload="metadata" height= "350" width="500" poster="public/assets/logo.png">
-  <source src="README/Video_Dimostrativo_Progettuale.mp4" type="video/mp4">
-</video>
-
-🎬 [Guarda il video dimostrativo (DropBox)](https://www.dropbox.com/scl/fi/em4aq2p6ikj2sbubk7pk9/Video_Dimostrativo_Progettuale.mp4?rlkey=1iedgxqn8iysdwqbggfh0rdyf&st=5f47itk1&dl=0)
+🎬 [Guarda il video dimostrativo del mio progetto su (DropBox)](https://www.dropbox.com/scl/fi/em4aq2p6ikj2sbubk7pk9/Video_Dimostrativo_Progettuale.mp4?rlkey=1iedgxqn8iysdwqbggfh0rdyf&st=5f47itk1&dl=0)
