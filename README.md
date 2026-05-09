@@ -396,6 +396,13 @@ usersRouter.post("/login", async (req, res) => { ... });
 usersRouter.get("/me", authenticateUser, async (req, res) => { ... });
 usersRouter.put("/me", authenticateUser, async (req, res) => { ... });
 ```
-## **Video Dimostrativo Progetto (DropBox):**
+## **Video Dimostrativo Progetto:**
 
-🎬 [Guarda il mio video dimostrativo del progetto su DropBox](https://www.dropbox.com/scl/fi/em4aq2p6ikj2sbubk7pk9/Video_Dimostrativo_Progettuale.mp4?rlkey=1iedgxqn8iysdwqbggfh0rdyf&st=5f47itk1&dl=0)
+<video controls preload="metadata" width="900" poster="public/assets/logo.png">
+  <source src="README/Video_Dimostrativo_Progettuale.mp4" type="video/mp4">
+  Il tuo browser non supporta il tag video.
+</video>
+
+Se il player non viene visualizzato nella tua piattaforma Git, puoi aprire direttamente il file video da qui:
+
+🎬 [Guarda il video dimostrativo (DropBox)](https://www.dropbox.com/scl/fi/em4aq2p6ikj2sbubk7pk9/Video_Dimostrativo_Progettuale.mp4?rlkey=1iedgxqn8iysdwqbggfh0rdyf&st=5f47itk1&dl=0)
