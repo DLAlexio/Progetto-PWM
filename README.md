@@ -398,11 +398,8 @@ usersRouter.put("/me", authenticateUser, async (req, res) => { ... });
 ```
 ## **Video Dimostrativo Progetto:**
 
-<video controls preload="metadata" width="900" poster="public/assets/logo.png">
+<video style= "video-align: center" controls preload="metadata" height= "350" width="500" poster="public/assets/logo.png">
   <source src="README/Video_Dimostrativo_Progettuale.mp4" type="video/mp4">
-  Il tuo browser non supporta il tag video.
 </video>
-
-Se il player non viene visualizzato nella tua piattaforma Git, puoi aprire direttamente il file video da qui:
 
 🎬 [Guarda il video dimostrativo (DropBox)](https://www.dropbox.com/scl/fi/em4aq2p6ikj2sbubk7pk9/Video_Dimostrativo_Progettuale.mp4?rlkey=1iedgxqn8iysdwqbggfh0rdyf&st=5f47itk1&dl=0)
