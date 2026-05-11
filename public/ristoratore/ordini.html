@@ -111,10 +111,6 @@
       background-color: #fff4d6;
       color: #8f5f00;
     }
-    .status-in-consegna {
-      background-color: #e7f1ff;
-      color: #0d58ca;
-    }
     .status-consegnato {
       background-color: #ddf6e8;
       color: #0f5132;
@@ -269,18 +265,7 @@
 
   function creaCardOrdine(order) {
     var classeStato = normalizzaClasseStato(order.stato);
-    var distanza = order.distanza_km ? `${order.distanza_km} km` : "N/D";
-    var costoConsegna = formatEuro(order.costo_consegna);
     var tempoAttesa = order.tempo_attesa ?? "N/D";
-
-    var consegnaDettagli = "";
-    if (order.metodo_consegna === "Consegna a Domicilio") {
-      consegnaDettagli = `
-        <p>Indirizzo consegna: ${order.indirizzo_consegna || "Non specificato"}</p>
-        <p>Distanza: ${distanza}</p>
-        <p>Costo consegna: ${costoConsegna}</p>
-      `;
-    }
 
     var orderDiv = document.createElement("div");
     orderDiv.className = "order-card";
@@ -291,7 +276,6 @@
         <p>Totale: ${formatEuro(order.totale)}</p>
         <p>Data ordine: ${order.data_ordine || "N/D"}</p>
         <p>Metodo consegna: ${order.metodo_consegna || "N/D"}</p>
-        ${consegnaDettagli}
         <p>Tempo di attesa: ${tempoAttesa} min</p>
         <p>Stato: <span class="status-badge status-${classeStato}">${order.stato || "N/D"}</span></p>
       </div>
@@ -356,21 +340,12 @@
       });
 
       var activeOrdersList = ordiniOrdinatiPerDataDesc.filter(order =>
-        ["ordinato", "in preparazione", "in consegna"].includes(order.stato)
+        ["ordinato", "in preparazione"].includes(order.stato)
       );
 
       var historyOrdersList = ordiniOrdinatiPerDataDesc.filter(order =>
-        !["ordinato", "in preparazione", "in consegna"].includes(order.stato)
+        !["ordinato", "in preparazione"].includes(order.stato)
       );
-
-      var ordiniConsegnatiConfermatiDalCliente = historyOrdersList.filter(order =>
-        order.metodo_consegna === "Consegna a Domicilio" && order.notifica_ristoratore_consegna === true
-      );
-
-      if (ordiniConsegnatiConfermatiDalCliente.length > 0) {
-        alert("Confermata la corretta consegna a Domicilio al cliente.");
-        confermaLetturaNotificheConsegna();
-      }
 
       activeOrdersList.forEach(order => {
         var orderDiv = creaCardOrdine(order);
@@ -379,7 +354,7 @@
           var updateBtn = document.createElement("button");
           updateBtn.className = "btn btn-primary";
           updateBtn.innerText = "Avanza Stato";
-          updateBtn.onclick = () => cambiaStatoOrdine(order._id, order.stato, order.metodo_consegna);
+          updateBtn.onclick = () => cambiaStatoOrdine(order._id, order.stato);
           orderDiv.querySelector(".order-actions").appendChild(updateBtn);
         }
 
@@ -402,7 +377,7 @@
     }
   }
 
-  async function cambiaStatoOrdine(orderId, statoAttuale, metodoConsegna) {
+  async function cambiaStatoOrdine(orderId, statoAttuale) {
     try {
       var response = await fetchConControlloToken(`${apiBase}/orders/${orderId}`, {
         method: "PUT",
@@ -425,35 +400,11 @@
         }
       }
 
-      if (
-        metodoConsegna === "Consegna a Domicilio" &&
-        statoAttuale === "in preparazione"
-      ) {
-        alert("L'ordine è in fase di consegna al cliente.");
-      } else if (updatedOrder && updatedOrder.stato === "consegnato") {
-        alert("Ordine consegnato correttamente al cliente.");
-      } else if (
-        statoAttuale === "in preparazione" &&
-        metodoConsegna === "Ritiro in Ristorante" &&
-        (!updatedOrder || !updatedOrder.stato)
-      ) {
-        alert("Ordine consegnato correttamente al cliente.");
-      }
-
       caricaOrdiniRistoratore();
     } catch (err) {
       console.error("Errore:", err);
     }
   }
-
-  async function confermaLetturaNotificheConsegna() {
-    try {
-      await fetchConControlloToken(`${apiBase}/orders/notifiche-consegna/ack`, {
-        method: "PUT",
-        headers: {
-          "Authorization": "Bearer " + token,
-          "Content-Type": "application/json"
-        }
       });
     } catch (err) {
       console.error("Errore nella conferma lettura notifiche consegna:", err);

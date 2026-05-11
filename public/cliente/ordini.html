@@ -112,10 +112,6 @@
       background-color: #fff4d6;
       color: #8f5f00;
     }
-    .status-in-consegna {
-      background-color: #e7f1ff;
-      color: #0d58ca;
-    }
     .status-consegnato {
       background-color: #ddf6e8;
       color: #0f5132;
@@ -269,15 +265,6 @@
       var orderDiv = document.createElement("div");
       orderDiv.className = "order-card";
 
-      var consegnaDettagli = "";
-      if (order.metodo_consegna === "Consegna a Domicilio") {
-        consegnaDettagli = `
-          <p>Indirizzo consegna: ${order.indirizzo_consegna || "Non specificato"}</p>
-          <p>Distanza: ${order.distanza_km ? order.distanza_km + " km" : "N/D"}</p>
-          <p>Costo consegna: ${formatEuro(order.costo_consegna)}</p>
-        `;
-      }
-
       orderDiv.innerHTML = `
         <h4 class="order-title">Ordine #${order._id}</h4>
         <p class="order-meta">Ristorante: ${order.ristorante_nome || "Non specificato"}</p>
@@ -285,7 +272,6 @@
           <p>Totale: ${formatEuro(order.totale)}</p>
           <p>Data ordine: ${order.data_ordine || "N/D"}</p>
           <p>Metodo consegna: ${order.metodo_consegna || "N/D"}</p>
-          ${consegnaDettagli}
           <p>Tempo di attesa: ${tempoAttesa} min</p>
           <p>Stato: <span class="status-badge status-${classeStato}">${order.stato || "N/D"}</span></p>
         </div>
@@ -334,15 +320,7 @@
         orders.forEach(order => {
           var orderDiv = creaCardOrdine(order);
 
-          if (order.stato === "in consegna" && order.metodo_consegna === "Consegna a Domicilio") {
-            var confirmBtn = document.createElement("button");
-            confirmBtn.className = "btn btn-confirm";
-            confirmBtn.innerText = "Conferma Consegna";
-            confirmBtn.onclick = () => confermaConsegna(order._id, confirmBtn);
-            orderDiv.querySelector(".order-actions").appendChild(confirmBtn);
-          }
-
-          if (["in preparazione", "ordinato", "in consegna"].includes(order.stato)) {
+          if (["in preparazione", "ordinato"].includes(order.stato)) {
             activeOrders.appendChild(orderDiv);
             ordiniAttiviPresenti = true;
           } else {
@@ -361,37 +339,6 @@
 
       } catch (err) {
         console.error("Errore nel caricamento degli ordini:", err);
-      }
-    }
-
-
-    async function confermaConsegna(orderId, buttonElement) {
-      try {
-        if (buttonElement) {
-          buttonElement.disabled = true;
-          buttonElement.innerText = "Conferma in corso...";
-        }
-
-        var response = await fetchConControlloToken(`${apiBase}/orders/${orderId}/consegna`, {
-          method: "PUT",
-        });
-
-        if (!response || !response.ok) {
-          const errorPayload = response ? await response.json().catch(() => null) : null;
-          const errorMessage = errorPayload?.error || "Errore nella conferma consegna.";
-          throw new Error(errorMessage);
-        }
-
-        alert("Consegna confermata correttamente.");
-
-        caricaOrdiniCliente();
-      } catch (err) {
-        console.error("Errore:", err);
-        alert(err.message || "Non è stato possibile confermare la consegna.");
-        if (buttonElement) {
-          buttonElement.disabled = false;
-          buttonElement.innerText = "Conferma Consegna";
-        }
       }
     }
 
