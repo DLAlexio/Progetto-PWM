@@ -22,7 +22,6 @@ function normalizeBoolean(value, fieldName) {
   throw new Error(`${fieldName} deve essere boolean`);
 }
 
-// GET /meals - Restituisce tutti i piatti, con filtri opzionali
 mealsRouter.get("/", async (req, res) => {
   try {
     const db = req.app.locals.db;
@@ -96,9 +95,6 @@ mealsRouter.get("/", async (req, res) => {
   }
 });
 
-
-
-// PUT /meals/offerte - Aggiorna stato offerta per una lista di piatti del menu del ristoratore
 mealsRouter.put("/offerte", authenticateUser, authorizeRistoratore, async (req, res) => {
   try {
     const db = req.app.locals.db;
@@ -156,7 +152,6 @@ mealsRouter.put("/offerte", authenticateUser, authorizeRistoratore, async (req, 
   }
 });
 
-// GET /meals/:id - Dettagli singolo piatto, identificato per _id
 mealsRouter.get("/:id", async (req, res) => {
   try {
     const db = req.app.locals.db;
@@ -178,8 +173,6 @@ mealsRouter.get("/:id", async (req, res) => {
   }
 });
 
-
-// POST /meals - Aggiunta piatto personalizzato (Richiede autenticazione utente ristoratore)
 mealsRouter.post("/", authenticateUser, authorizeRistoratore, async (req, res) => {
   try {
     const db = req.app.locals.db;
@@ -269,9 +262,6 @@ mealsRouter.post("/", authenticateUser, authorizeRistoratore, async (req, res) =
   }
 });
 
-
-
-// PUT /meals/:id - Modifica piatto personalizzato (Richiede autenticazione utente ristoratore)
 mealsRouter.put("/:id", authenticateUser, authorizeRistoratore, async (req, res) => {
   try {
     const db = req.app.locals.db;
@@ -297,7 +287,6 @@ mealsRouter.put("/:id", authenticateUser, authorizeRistoratore, async (req, res)
       return res.status(403).json({ error: "Impossibile modificare piatti generali" });
     }
 
-    // un ristoratore può modificare solo i piatti personalizzati del proprio ristorante
     if (meal.ristorante_id.toString() !== restaurant._id.toString()) {
       return res.status(403).json({ error: "Accesso negato: non proprietario del piatto" });
     }
@@ -377,8 +366,6 @@ mealsRouter.put("/:id", authenticateUser, authorizeRistoratore, async (req, res)
   }
 });
 
-
-// DELETE /meals/:id - Elimina piatto personalizzato (Richiede autenticazione utente ristoratore)
 mealsRouter.delete("/:id", authenticateUser, authorizeRistoratore, async (req, res) => {
   try {
     const db = req.app.locals.db;

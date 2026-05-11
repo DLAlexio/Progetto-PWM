@@ -21,7 +21,6 @@ function extractAddressParts(rawAddress = "") {
 
   const streetChunk = chunks[0] || "";
 
-  // Versione migliorata: pulisce CAP e "Italia"
   const cityChunkRaw = chunks.length > 1 ? chunks[chunks.length - 1] : "";
   const cityChunk = cityChunkRaw
     .replace(/\b\d{5}\b/, "")
@@ -50,7 +49,6 @@ function addressMatches(parsedInput, nominatimAddress = {}) {
     nominatimAddress.residential
   ].filter(Boolean);
 
-  // Versione migliorata: normalizza tipi di strada
   const normalizeStreet = (streetValue = "") => normalizeValue(
     streetValue
       .replace(/\b(via|viale|piazza|corso|largo|vicolo|strada|piazzale)\b/gi, "")
@@ -102,7 +100,6 @@ export async function validateAddressWithOpenStreetMap(rawAddress, options = {})
     return { valid: false, reason: "Indirizzo troppo corto: specifica Via, Numero Civico, CAP e Città." };
   }
 
-  // Versione più permissiva ma corretta
   if (parsedInput.chunks.length < 2 && !parsedInput.cap) {
     return { valid: false, reason: "Formato indirizzo non valido: usa almeno 'Via ... Numero, CAP Città'." };
   }

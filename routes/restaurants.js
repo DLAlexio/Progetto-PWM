@@ -29,13 +29,6 @@ function getYyyyMmDd(dateValue) {
   return dateValue.toISOString().slice(0, 10);
 }
 
-/**
- * GET /restaurants/search
- * Ricerca ristoranti per nome e indirizzo (parziale, case insensitive)
- * Query params:
- *  - q: stringa da cercare nel nome
- *  - address: stringa da cercare nell'indirizzo
- */
 router.get("/search", async (req, res) => {
   const db = req.app.locals.db;
   const { q, address } = req.query;
@@ -62,14 +55,6 @@ router.get("/search", async (req, res) => {
   }
 });
 
-
-
-/**
- * GET /restaurants/by-meal
- * Ricerca ristoranti che hanno nel menù un piatto che matcha il nome richiesto
- * Query params:
- *  - meal: stringa da cercare nel nome del piatto
- */
 router.get("/by-meal", async (req, res) => {
   const db = req.app.locals.db;
   const { meal } = req.query;
@@ -115,7 +100,6 @@ router.get("/by-meal", async (req, res) => {
   }
 });
 
-//GET /restaurants - Lista ristoranti registrati
 router.get("/", async (req, res) => {
   const db = req.app.locals.db;
   try {
@@ -127,8 +111,6 @@ router.get("/", async (req, res) => {
   }
 });
 
-
-// GET /restaurants/statistics - Statistiche ristorante (Richiede autenticazione ristoratore)
 router.get("/statistics", authenticateUser, authorizeRistoratore, async (req, res) => {
   try {
     const db = req.app.locals.db;
@@ -200,7 +182,6 @@ router.get("/statistics", authenticateUser, authorizeRistoratore, async (req, re
   }
 });
 
-//GET /restaurants/:restaurantID - Informazioni di uno specifico ristorante, menù incluso
 router.get("/:restaurantId", async (req, res) => {
   const db = req.app.locals.db;
   const restaurantId = req.params.restaurantId;
@@ -227,8 +208,6 @@ router.get("/:restaurantId", async (req, res) => {
   }
 });
 
-
-// POST /restaurants - Crea un nuovo ristorante (Richiede autenticazione ristoratore)
 router.post("/", authenticateUser, authorizeRistoratore, async (req, res) => {
   const db = req.app.locals.db;
   const user = req.user;
@@ -276,7 +255,6 @@ router.post("/", authenticateUser, authorizeRistoratore, async (req, res) => {
   }
 });
 
-//PUT /restaurants/:restaurantId - Modifica dati ristorante (Richiede autenticazione ristoratore)
 router.put("/:restaurantId", authenticateUser, authorizeRistoratore, async (req, res) => {
   const db = req.app.locals.db;
   const user = req.user;
@@ -332,7 +310,6 @@ router.put("/:restaurantId", authenticateUser, authorizeRistoratore, async (req,
   }
 });
 
-//DELETE /restaurants/:restaurantId - Elimina ristorante, tutti gli ordini e tutti i piatti personalizzati associati (Richiede autenticazione ristoratore)
 router.delete("/:restaurantId", authenticateUser, authorizeRistoratore, async (req, res) => {
   const db = req.app.locals.db;
   const user = req.user;
@@ -362,6 +339,5 @@ router.delete("/:restaurantId", authenticateUser, authorizeRistoratore, async (r
     res.status(500).json({ error: "Errore nella cancellazione del ristorante" });
   }
 });
-
 
 export default router;

@@ -2,18 +2,7 @@ import express from "express";
 import authenticateUser from "../middlewares/authenticateUser.js";
 import { ObjectId } from "mongodb";
 
-/*Express.js è un framework per Node.js, che fornisce una serie di strumenti utili alla creazione di API, Middlewares, e per la semplificazione delle operazioni di routing*/
-
-const cartsRouter = express.Router(); //definiamo un oggetto Router
-
-/*Per Routing si intende determinare come la mia app risponde a richieste client, in base all'endpoint a cui vengono effettuate (Endpoint definire come URI + Metodo HTTP specifico)
-  Vogliamo quindi definire un comportamento diverso del backend, in base all'URI e al metodo HTTP a cui vengono effettuate le richieste client.
-  
-  Definiamo una rotta:
-  Router.HTTPMETHOD(URI, HANDLERFUNCTION)
-  Dove HTTPMETHOD è un metodo di richiesta HTTP,
-  URI è un percorso sul server
-  HANDLER è la funzione che viene eseguita quando arriva una richiesta client all'URI specificato, col metodo METHOD*/
+const cartsRouter = express.Router();
 
 cartsRouter.get("/me", authenticateUser, async (req, res) => {
     try {
@@ -29,8 +18,7 @@ cartsRouter.get("/me", authenticateUser, async (req, res) => {
     }
   });
   
-  // POST /carts/me/items - Aggiunge un piatto al carrello dell'utente autenticato, creando il carrello se non esistente
-  cartsRouter.post("/me/items", authenticateUser, async (req, res) => {
+cartsRouter.post("/me/items", authenticateUser, async (req, res) => {
     try {
       const db = req.app.locals.db;
       const { meal_id, quantita, prezzo_unitario, prezzo_originale, in_offerta, sconto_percentuale, ristorante_id, nome } = req.body;
@@ -83,8 +71,7 @@ cartsRouter.get("/me", authenticateUser, async (req, res) => {
     }
   });
   
-  // DELETE /carts/me/items/:mealId - Rimuovi un piatto dal carrello dell'utente autenticato, eliminando il carrello se rimane vuoto
-  cartsRouter.delete("/me/items/:mealId", authenticateUser, async (req, res) => {
+cartsRouter.delete("/me/items/:mealId", authenticateUser, async (req, res) => {
     try {
       const db = req.app.locals.db;
       const meal_id = req.params.mealId;
@@ -99,7 +86,6 @@ cartsRouter.get("/me", authenticateUser, async (req, res) => {
         return res.status(404).json({ error: "Carrello vuoto o non trovato" });
       }
       
-      //tutti i piatti, tranne quello identificato per l'eliminazione
       cart.meals = cart.meals.filter(m => m._id.toString() !== meal_id);
   
       if (cart.meals.length === 0) {
@@ -119,10 +105,7 @@ cartsRouter.get("/me", authenticateUser, async (req, res) => {
     }
   });
   
-  
-  
-  // DELETE /carts/me - Elimina tutto il carrello
-  cartsRouter.delete("/me", authenticateUser, async (req, res) => {
+cartsRouter.delete("/me", authenticateUser, async (req, res) => {
     try {
       const db = req.app.locals.db;
       await db.collection("carts").deleteOne({ user_id: new ObjectId(req.user._id) });
@@ -132,9 +115,8 @@ cartsRouter.get("/me", authenticateUser, async (req, res) => {
       res.status(500).json({ error: "Errore durante l'eliminazione del carrello" });
     }
   });
-  
-  // Endpoint legacy mantenuti per retrocompatibilità (non pienamente REST)
-  cartsRouter.put("/add", authenticateUser, async (req, res) => {
+
+cartsRouter.put("/add", authenticateUser, async (req, res) => {
     try {
       const db = req.app.locals.db;
       const { meal_id, quantita, prezzo_unitario, prezzo_originale, in_offerta, sconto_percentuale, ristorante_id, nome } = req.body;
@@ -169,7 +151,7 @@ cartsRouter.get("/me", authenticateUser, async (req, res) => {
     }
   });
 
-  cartsRouter.put("/remove", authenticateUser, async (req, res) => {
+cartsRouter.put("/remove", authenticateUser, async (req, res) => {
     try {
       const db = req.app.locals.db;
       const { meal_id } = req.body;

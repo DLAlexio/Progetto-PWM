@@ -110,7 +110,6 @@ function calculateOrderPreparationMinutes(order) {
   }, 0);
 }
 
-// POST /orders - Crea nuovo ordine per l'utente autenticato
 ordersRouter.post("/", authenticateUser, async (req, res) => {
   try {
     const db = req.app.locals.db;
@@ -182,7 +181,6 @@ ordersRouter.post("/", authenticateUser, async (req, res) => {
         throw new Error(`Ristorante non trovato per id ${ristoranteId}`);
       }
 
-      // Ordine va direttamente in preparazione se è il primo della coda del ristorante
       const stato = ordiniRistorante.length === 0 ? "in preparazione" : "ordinato";
 
       ordiniRistorante.forEach((o) => {
@@ -205,7 +203,6 @@ ordersRouter.post("/", authenticateUser, async (req, res) => {
         } catch (routingError) {
           console.warn("Routing OSRM non disponibile, fallback su distanza lineare.", routingError.message);
           distanzaKm = Number(haversineKm(coordRistorante, coordConsegna).toFixed(2));
-          // Fallback prudenziale: velocità media urbana ~35 km/h
           durataConsegnaMin = Math.max(1, Math.ceil((distanzaKm / 35) * 60));
         }
 
@@ -242,8 +239,6 @@ ordersRouter.post("/", authenticateUser, async (req, res) => {
   }
 });
 
-
-// PATCH /orders/:id/status - Modifica stato ordine (Richiede autenticazione ristoratore)
 const updateOrderStatus = async (req, res) => {
   try {
     const db = req.app.locals.db;
@@ -293,8 +288,6 @@ const updateOrderStatus = async (req, res) => {
 
 ordersRouter.patch("/:id/status", authenticateUser, authorizeRistoratore, updateOrderStatus);
 ordersRouter.put("/:id", authenticateUser, authorizeRistoratore, updateOrderStatus);
-
-// GET /orders - Lista ordini (Cliente solo propri, Ristoratore solo quelli relativi al suo ristorante)
 ordersRouter.get("/", authenticateUser, async (req, res) => {
   try {
     const db = req.app.locals.db;
@@ -339,7 +332,6 @@ ordersRouter.get("/", authenticateUser, async (req, res) => {
   }
 });
 
-// PUT /orders/notifiche-consegna/ack - Segna come lette le notifiche consegna a domicilio per il ristoratore
 ordersRouter.put("/notifiche-consegna/ack", authenticateUser, authorizeRistoratore, async (req, res) => {
   try {
     const db = req.app.locals.db;
@@ -368,8 +360,6 @@ ordersRouter.put("/notifiche-consegna/ack", authenticateUser, authorizeRistorato
   }
 });
 
-
-// GET /orders/:id - Dettagli singolo ordine (Cliente solo propri, Ristoratore solo quelli relativi al suo ristorante)
 ordersRouter.get("/:id", authenticateUser, async (req, res) => {
   try {
     const db = req.app.locals.db;
@@ -410,8 +400,6 @@ ordersRouter.get("/:id", authenticateUser, async (req, res) => {
   }
 });
 
-
-// PUT /orders/:id/consegna - Conferma consegna da parte del cliente (per ordini con consegna a domicilio)
 ordersRouter.put("/:id/consegna", authenticateUser, async (req, res) => {
   try {
     const db = req.app.locals.db;
@@ -449,6 +437,5 @@ ordersRouter.put("/:id/consegna", authenticateUser, async (req, res) => {
     res.status(500).json({ error: "Errore nella conferma consegna" });
   }
 });
-
 
 export default ordersRouter;

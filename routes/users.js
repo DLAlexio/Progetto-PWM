@@ -37,7 +37,6 @@ function isValidMetodoPagamento(metodoPagamento) {
   return metodiConsentiti.some((metodo) => normalized.includes(metodo));
 }
 
-// GET /users - Lista utenti (filtrabile per ruolo), senza campi sensibili
 usersRouter.get("/", async (req, res) => {
   try {
     const db = req.app.locals.db;
@@ -67,7 +66,6 @@ usersRouter.get("/", async (req, res) => {
   }
 });
 
-// POST /users/register - Registrazione utente (cliente o ristoratore)
 usersRouter.post("/register", async (req, res) => {
   try {
     const db = req.app.locals.db;
@@ -126,7 +124,6 @@ usersRouter.post("/register", async (req, res) => {
       return res.status(409).json({ error: "Username o Email già in uso" });
     }
 
-    // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const preferenzeSanificate = sanitizePreferenze(preferenze);
@@ -169,7 +166,6 @@ usersRouter.post("/register", async (req, res) => {
   }
 });
 
-// POST /users/login - login
 usersRouter.post("/login", async (req, res) => {
   try {
     const db = req.app.locals.db;
@@ -189,7 +185,6 @@ usersRouter.post("/login", async (req, res) => {
       return res.status(401).json({ error: "Credenziali non valide" });
     }
 
-    // genera JWT con userId e role, codificato in base alla chiave memorizzata nel file .env
     const token = jwt.sign(
       { userId: user._id.toString(), role: user.role },
       process.env.JWT_SECRET,
@@ -203,7 +198,6 @@ usersRouter.post("/login", async (req, res) => {
   }
 });
 
-// GET /users/me - Restituisce informazioni relative all'utente autenticato
 usersRouter.get("/me", authenticateUser, async (req, res) => {
   try {
     const db = req.app.locals.db;
@@ -223,7 +217,6 @@ usersRouter.get("/me", authenticateUser, async (req, res) => {
   }
 });
 
-// PUT /users/me - Modifica dati profilo utente autenticato (passsword esclusa)
 usersRouter.put("/me", authenticateUser, async (req, res) => {
   try {
     const db = req.app.locals.db;
@@ -286,7 +279,6 @@ usersRouter.put("/me", authenticateUser, async (req, res) => {
       return res.status(400).json({ error: "Partita IVA non valida: deve contenere 11 cifre" });
     }
 
-    // Impedisce inserimento nuova mail o username, se non è univoco per il db.
     if (req.body.email || req.body.username) {
       const query = {
         $or: [],
@@ -335,7 +327,6 @@ usersRouter.put("/me", authenticateUser, async (req, res) => {
   }
 });
 
-// PUT /users/me/password - Modifica password utente autenticato
 usersRouter.put("/me/password", authenticateUser, async (req, res) => {
   try {
     const db = req.app.locals.db;
@@ -376,9 +367,6 @@ usersRouter.put("/me/password", authenticateUser, async (req, res) => {
   }
 });
 
-//DELETE /me - Elimina utente autenticato:
-//Se l'utente è un cliente, vengono eliminati anche il carrello e tutti gli ordini ancora attivi (quelli già consegnati, rimangono nel DB per statistiche ristorante)
-//Se l'utente è un ristoratore, vengono eliminati anche il suo ristorante, e tutti gli ordini di quel ristorante.
 usersRouter.delete("/me", authenticateUser, async (req, res) => {
   const db = req.app.locals.db;
   const userId = req.user._id;
@@ -413,4 +401,5 @@ usersRouter.delete("/me", authenticateUser, async (req, res) => {
     res.status(500).json({ error: "Errore durante l'eliminazione dell'utente" });
   }
 });
+
 export default usersRouter;
