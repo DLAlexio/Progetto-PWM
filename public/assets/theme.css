@@ -165,3 +165,245 @@ textarea:focus {
 .text-muted {
   color: var(--classic-muted) !important;
 }
+
+/* Responsive rules migrated from responsive.css */
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  max-width: 100%;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.main-content,
+.form-container,
+.cart-container,
+.login-container,
+.register-container {
+  width: 100%;
+}
+
+@media (max-width: 992px) {
+  body {
+    overflow-x: hidden;
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100% !important;
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.08) !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    position: static !important;
+    background: #ffffff;
+    height: auto !important;
+    max-height: none !important;
+    overflow-y: visible !important;
+    align-self: stretch;
+    padding: 0.75rem !important;
+    margin-bottom: 0.75rem;
+
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 0.45rem;
+  }
+
+  .sidebar-header {
+    margin-bottom: 0.25rem !important;
+    grid-column: 1 / -1;
+  }
+
+  .sidebar-header img {
+    max-width: 120px !important;
+  }
+
+  .sidebar a.nav-link {
+    padding: 0.6rem 0.75rem !important;
+    margin-bottom: 0 !important;
+    font-size: 0.93rem;
+    font-weight: 500;
+    border: 1px solid #d6e4ff;
+    border-radius: 0.75rem !important;
+    background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+    color: #4b5563 !important;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    box-shadow: 0 1px 4px rgba(15, 23, 42, 0.06);
+    transition: all 0.2s ease;
+  }
+
+  .sidebar a.nav-link.active,
+  .sidebar a.nav-link:hover {
+    border-color: #6ea8fe;
+    background: linear-gradient(120deg, #0d6efd 0%, #6ea8fe 100%);
+    color: #ffffff !important;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(13, 110, 253, 0.28);
+  }
+
+  header {
+    padding: 1rem !important;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .hero {
+    padding: 2rem 1rem !important;
+    justify-content: center !important;
+    text-align: center;
+    gap: 1.5rem;
+    min-height: auto !important;
+  }
+
+  .hero-text,
+  .hero-img {
+    max-width: 100% !important;
+  }
+
+  .hero-text h1 {
+    font-size: clamp(1.8rem, 7vw, 2.4rem) !important;
+  }
+
+  .hero-text p {
+    font-size: 1rem !important;
+  }
+
+  .btn-custom {
+    margin-right: 0 !important;
+    margin-top: 0.75rem !important;
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .main-content {
+    padding: 1.25rem !important;
+  }
+
+  .card img,
+  .meal-card img,
+  .ristorante-card img {
+    height: 190px !important;
+  }
+
+  .search-bar,
+  .filter-panel,
+  .filter-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem !important;
+  }
+
+  .search-bar input,
+  .filter-panel > div,
+  .filter-panel .btn,
+  .filter-section > div,
+  .filter-section .btn {
+    width: 100%;
+  }
+
+  .meal-cards-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) !important;
+  }
+
+  .pagination-controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .pagination-controls input[type="number"] {
+    width: 72px;
+  }
+
+  .order-card,
+  .stats-card,
+  .card-custom {
+    padding: 0.85rem !important;
+  }
+
+  .form-container,
+  .cart-container,
+  .login-container,
+  .register-container {
+    margin: 1rem auto !important;
+    padding: 1rem !important;
+  }
+
+  table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    padding: 0.65rem !important;
+    grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+    gap: 0.35rem;
+  }
+
+  .sidebar-header {
+    margin-bottom: 0.35rem !important;
+  }
+
+  .sidebar-header img {
+    max-width: 107px !important;
+  }
+
+  .sidebar a.nav-link {
+    padding: 0.5rem 0.55rem !important;
+    font-size: 0.84rem;
+    border-radius: 0.65rem !important;
+  }
+
+  .main-content {
+    padding: 1rem !important;
+  }
+
+  .main-content h2 {
+    margin-bottom: 1rem !important;
+    font-size: 1.45rem;
+  }
+
+  .search-bar,
+  .filter-panel,
+  .filter-section {
+    gap: 0.6rem !important;
+  }
+
+  .card img,
+  .meal-card img,
+  .ristorante-card img {
+    height: 180px !important;
+  }
+
+  .meal-cards-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  #piattoPersonalizzato,
+  #restaurantForm,
+  #profileForm,
+  #passwordForm {
+    max-width: 100% !important;
+  }
+
+  .d-flex.gap-2 {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .d-flex.gap-2 .btn {
+    width: 100%;
+  }
+}
