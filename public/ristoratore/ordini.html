@@ -42,7 +42,9 @@
       transform: scale(1.03);
     }
     .sidebar-header img {
-      max-width: 195px;
+      max-width: 245px;
+      width: 100%;
+      height: auto;
     }
     .sidebar a.nav-link {
       color: #555;
@@ -145,7 +147,7 @@
       margin-top: 0.75rem;
     }
   </style>
-  <link rel="icon" type="image/png" sizes="64x64" href="../assets/Favicon.png">
+  <link rel="icon" type="image/png" sizes="128x128" href="../assets/Favicon.png">
   <script src="../assets/auth.js"></script>
 </head>
 <body>
@@ -239,6 +241,10 @@
       .replace(/\s+/g, "-")
       .normalize("NFD")
       .replace(/[\u0300-\u036f]/g, "");
+  }
+
+  function normalizzaStato(stato) {
+    return normalizzaClasseStato(stato).replace(/-/g, " ");
   }
 
   function creaDettagliPasti(order) {
@@ -339,18 +345,20 @@
         return estraiTimestampOrdine(b) - estraiTimestampOrdine(a);
       });
 
-      var activeOrdersList = ordiniOrdinatiPerDataDesc.filter(order =>
-        ["ordinato", "in preparazione"].includes(order.stato)
-      );
+      var activeOrdersList = ordiniOrdinatiPerDataDesc.filter(order => {
+        var statoNorm = normalizzaStato(order.stato);
+        return ["ordinato", "in preparazione"].includes(statoNorm);
+      });
 
-      var historyOrdersList = ordiniOrdinatiPerDataDesc.filter(order =>
-        !["ordinato", "in preparazione"].includes(order.stato)
-      );
+      var historyOrdersList = ordiniOrdinatiPerDataDesc.filter(order => {
+        var statoNorm = normalizzaStato(order.stato);
+        return !["ordinato", "in preparazione"].includes(statoNorm);
+      });
 
       activeOrdersList.forEach(order => {
         var orderDiv = creaCardOrdine(order);
 
-        if (["ordinato", "in preparazione"].includes(order.stato)) {
+        if (["ordinato", "in preparazione"].includes(normalizzaStato(order.stato))) {
           var updateBtn = document.createElement("button");
           updateBtn.className = "btn btn-primary";
           updateBtn.innerText = "Avanza Stato";
@@ -403,11 +411,6 @@
       caricaOrdiniRistoratore();
     } catch (err) {
       console.error("Errore:", err);
-    }
-  }
-      });
-    } catch (err) {
-      console.error("Errore nella conferma lettura notifiche consegna:", err);
     }
   }
 
