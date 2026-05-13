@@ -3,8 +3,8 @@
   --classic-surface: #ffffff;
   --classic-border: #b7b1a5;
   --classic-text: #2f2b24;
-  --classic-primary: #224b7a;
-  --classic-primary-dark: #173454;
+  --classic-primary: #5a4a3c;
+  --classic-primary-dark: #3f342b;
   --classic-muted: #6d6558;
 }
 
@@ -135,7 +135,7 @@ input[type="tel"] {
 .form-select:focus,
 textarea:focus {
   border-color: var(--classic-primary) !important;
-  box-shadow: 0 0 0 0.12rem rgba(34, 75, 122, 0.2) !important;
+  box-shadow: 0 0 0 0.12rem rgba(90, 74, 60, 0.2) !important;
 }
 
 .btn {
