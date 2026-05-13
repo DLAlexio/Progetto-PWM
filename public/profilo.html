@@ -175,38 +175,38 @@
           <form id="profileForm">
             <div class="mb-3">
               <label for="nome" class="form-label">Nome *</label>
-              <input type="text" id="nome" class="form-control" placeholder="es. Mario" required>
+              <input type="text" id="nome" class="form-control" placeholder="es. Luca" required>
             </div>
 
             <div class="mb-3">
               <label for="cognome" class="form-label">Cognome *</label>
-              <input type="text" id="cognome" class="form-control" placeholder="es. Rossi" required>
+              <input type="text" id="cognome" class="form-control" placeholder="es. Bianchi" required>
             </div>
 
             <div class="mb-3">
               <label for="username" class="form-label">Username *</label>
-              <input type="text" id="username" class="form-control" placeholder="es. mario.rossi" required>
+              <input type="text" id="username" class="form-control" placeholder="es. luca.bianchi" required>
             </div>
 
             <div class="mb-3">
               <label for="email" class="form-label">Email *</label>
-              <input type="email" id="email" class="form-control" placeholder="es. nome.cognome@email.it" required>
+              <input type="email" id="email" class="form-control" placeholder="es. nome.cognome@email.com" required>
             </div>
 
             <div class="mb-3">
               <label for="numero_di_telefono" class="form-label">Numero di Telefono *</label>
-              <input type="text" id="numero_di_telefono" class="form-control" placeholder="es. +39 333 123 4567 oppure 3331234567" required>
+              <input type="text" id="numero_di_telefono" class="form-control" placeholder="es. +39 320 765 4321 oppure 3207654321" required>
             </div>
 
             <div id="campiCliente" style="display: none;">
               <div class="mb-3">
                 <label for="indirizzo" class="form-label">Indirizzo *</label>
-                <textarea id="indirizzo" class="form-control" rows="3" placeholder="es. Via, Numero Civico, CAP, Città e Provincia (es. Via Aosta 10, 20155 Milano)"></textarea>
+                <textarea id="indirizzo" class="form-control" rows="3" placeholder="es. Via, Numero Civico, CAP, Città e Provincia (es. Via Roma 25, 80133 Napoli)"></textarea>
               </div>
 
               <div class="mb-3">
                 <label for="metodo_pagamento" class="form-label">Metodo di pagamento *</label>
-                <input type="text" id="metodo_pagamento" class="form-control" placeholder="es. Carta di Credito / Carta di Debito">
+                <input type="text" id="metodo_pagamento" class="form-control" placeholder="es. Carta di credito / Bancomat">
               </div>
 
               <div class="mb-3">
@@ -219,7 +219,7 @@
             <div id="campiRistoratore" style="display: none;">
               <div class="mb-3">
                 <label for="piva" class="form-label">Partita IVA *</label>
-                <input type="text" id="piva" class="form-control" placeholder="es. 11 cifre (es. 12345678901)">
+                <input type="text" id="piva" class="form-control" placeholder="es. 11 cifre (es. 10987654321)">
               </div>
             </div>
 
@@ -246,7 +246,7 @@
 
             <div class="mb-3">
               <label for="newPassword" class="form-label">Nuova Password *</label>
-              <input type="password" id="newPassword" class="form-control" placeholder="es. M1lano!2026 (min 8, almeno 1 lettera, 1 numero e 1 simbolo)" required>
+              <input type="password" id="newPassword" class="form-control" placeholder="es. N4poli!2026 (min 8, almeno 1 lettera, 1 numero e 1 simbolo)" required>
             </div>
 
             <button type="submit" class="btn btn-primary">Modifica Password</button>
@@ -503,7 +503,7 @@
       }
 
       if (!validaTelefono(payload.numero_di_telefono)) {
-        mostraEsitoAggiornamentoProfilo("Modifica non effettuata: Numero di Telefono non valido. Usa solo cifre o spazi (es. +39 333 123 4567).", "errore");
+        mostraEsitoAggiornamentoProfilo("Modifica non effettuata: Numero di Telefono non valido. Usa solo cifre o spazi (es. +39 320 765 4321).", "errore");
         return;
       }
 
