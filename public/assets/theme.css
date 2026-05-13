@@ -407,3 +407,54 @@ img {
     width: 100%;
   }
 }
+
+/* Global desaturation for custom page accents */
+:root {
+  --brand-primary: var(--classic-primary) !important;
+  --brand-accent: #c8b07a !important;
+  --surface: var(--classic-surface) !important;
+  --muted: var(--classic-muted) !important;
+  --text: var(--classic-text) !important;
+  --profile-gradient: linear-gradient(135deg, var(--classic-primary) 0%, var(--classic-primary-dark) 100%) !important;
+  --profile-text-soft: var(--classic-muted) !important;
+  --profile-border: var(--classic-border) !important;
+}
+
+[class*="badge"],
+.offer-badge,
+.offer-badge-inline,
+.cart-offer-badge,
+.order-offer-badge,
+.offer-save,
+.category-tag {
+  background: #d9d1c2 !important;
+  color: var(--classic-text) !important;
+  border: 1px solid var(--classic-border) !important;
+}
+
+.offer-new-price,
+.order-new-price,
+.cart-new-price {
+  color: #2f5a36 !important;
+}
+
+[class*="old-price"],
+.offer-arrow,
+.order-price-arrow,
+.category-count,
+.stat-value {
+  color: var(--classic-muted) !important;
+}
+
+[style*="linear-gradient"],
+.hero,
+.panel-card,
+.category-header,
+.menu-card.in-offerta,
+.stats-card,
+.quick-card,
+.profile-hero,
+.chart-card {
+  background: #f8f5ef !important;
+  background-image: none !important;
+}
