@@ -48,6 +48,44 @@ async function bootstrapInitialMeals(db) {
   console.log(`Bootstrap completato: caricati ${normalizedMeals.length} piatti iniziali da documents/meals.json`);
 }
 
+async function syncGenericMealPrices(db) {
+  const mealsCollection = db.collection("meals");
+  const rawMeals = JSON.parse(fs.readFileSync("./documents/meals.json", "utf-8"));
+  const sourceMeals = Array.isArray(rawMeals) ? rawMeals : [];
+
+  const priceByIdMeal = new Map(
+    sourceMeals
+      .filter((meal) => meal?.idMeal && Number.isFinite(Number(meal.prezzo)))
+      .map((meal) => [String(meal.idMeal), Number(meal.prezzo)])
+  );
+
+  if (priceByIdMeal.size === 0) return;
+
+  const genericMeals = await mealsCollection
+    .find({ ristorante_id: { $exists: false }, idMeal: { $exists: true } }, { projection: { _id: 1, idMeal: 1, prezzo: 1 } })
+    .toArray();
+
+  const updates = genericMeals
+    .map((meal) => {
+      const canonicalPrice = priceByIdMeal.get(String(meal.idMeal));
+      if (!Number.isFinite(canonicalPrice)) return null;
+      if (Number(meal.prezzo) === canonicalPrice) return null;
+
+      return {
+        updateOne: {
+          filter: { _id: meal._id },
+          update: { $set: { prezzo: canonicalPrice } }
+        }
+      };
+    })
+    .filter(Boolean);
+
+  if (!updates.length) return;
+
+  const result = await mealsCollection.bulkWrite(updates, { ordered: false });
+  console.log(`Prezzi piatti generici sincronizzati da documents/meals.json: ${result.modifiedCount} aggiornati.`);
+}
+
 async function startServer() {
   try {
     const client = new MongoClient(config.MONGODB_URI);
@@ -55,6 +93,7 @@ async function startServer() {
     app.locals.db = client.db(config.MONGODB_DB);
     await app.locals.db.command({ ping: 1 });
     await bootstrapInitialMeals(app.locals.db);
+    await syncGenericMealPrices(app.locals.db);
 
     app.get("/", (req, res) => {
       res.sendFile(path.join(__dirname, "public", "index.html"));
