@@ -298,11 +298,11 @@ p,
 .hero-img {
   width: min(360px, 100%) !important;
   max-width: min(360px, 100%) !important;
-  padding: 1.15rem !important;
-  background: rgba(255, 255, 255, 0.92) !important;
-  border: 1px solid rgba(255, 255, 255, 0.55) !important;
-  border-radius: var(--radius) !important;
-  box-shadow: 0 22px 42px rgba(32, 38, 34, 0.2) !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
 }
 
 header {
