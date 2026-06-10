@@ -125,16 +125,22 @@
     }
 
     .empty-state-icon {
-      width: 160px;
-      height: 160px;
-      padding-bottom: 20px;
-      border-radius: 50%;
+      width: 190px !important;
+      height: 190px !important;
+      padding: 0 !important;
+      border-radius: 0.75rem !important;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      background: #e4ebf7;
-      font-size: 6rem;
-      margin-bottom: 2rem;
+      background: #ffffff !important;
+      margin-bottom: 2rem !important;
+    }
+    .empty-state-icon .empty-state-logo {
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: contain !important;
+      background: #ffffff !important;
+      border-radius: inherit;
     }
 
     .empty-state-title {
@@ -253,7 +259,9 @@
           <div class="empty-state-wrapper">
             <div class="card empty-state-card">
               <div class="card-body text-center py-5 px-4">
-                <div class="empty-state-icon">🍔</div>
+                <div class="empty-state-icon">
+                  <img src="../assets/restaurant-dashboard-logo.png" class="empty-state-logo" alt="Logo ristorante" />
+                </div>
                 <h3 class="empty-state-title">Non hai ancora creato un Ristorante</h3>
                 <p class="empty-state-subtitle">
                   Inizia adesso configurando il tuo Ristorante e rendilo visibile ai clienti.
@@ -269,10 +277,8 @@
       }
 
       dashboardTitle.style.display = "";
-      var restaurantImageSrc = mioRistorante.image || "../assets/restaurant-dashboard-logo.png";
-      var restaurantImageClass = mioRistorante.image
-        ? "restaurant-image"
-        : "restaurant-image restaurant-logo-placeholder";
+      var restaurantImageSrc = "../assets/restaurant-dashboard-logo.png";
+      var restaurantImageClass = "restaurant-image restaurant-logo-placeholder";
 
       contentArea.innerHTML = `
         <div class="row g-4">
