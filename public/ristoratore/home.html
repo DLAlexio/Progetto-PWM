@@ -90,12 +90,6 @@
       border: 1px solid #e9ecef;
       background-color: #f8f9fa;
     }
-    .restaurant-image.restaurant-logo-placeholder {
-      height: 260px;
-      object-fit: contain !important;
-      padding: 1rem;
-      background-color: #ffffff !important;
-    }
     .data-label {
       color: #6c757d;
       font-size: 0.9rem;
@@ -277,8 +271,7 @@
       }
 
       dashboardTitle.style.display = "";
-      var restaurantImageSrc = "../assets/restaurant-dashboard-logo.png";
-      var restaurantImageClass = "restaurant-image restaurant-logo-placeholder";
+      var restaurantImageSrc = mioRistorante.image || "../assets/logo.png";
 
       contentArea.innerHTML = `
         <div class="row g-4">
@@ -289,9 +282,9 @@
                 <div class="mb-3">
                   <img
                     src="${restaurantImageSrc}"
-                    class="${restaurantImageClass}"
+                    class="restaurant-image"
                     alt="Immagine ristorante ${mioRistorante.name || ''}"
-                    onerror="this.onerror=null; this.src='../assets/restaurant-dashboard-logo.png'; this.classList.add('restaurant-logo-placeholder');"
+                    onerror="this.onerror=null; this.src='../assets/logo.png';"
                   />
                 </div>
                 <div class="data-label">Nome</div>
