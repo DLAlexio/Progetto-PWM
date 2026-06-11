@@ -70,8 +70,10 @@
     .hidden {
       display: none;
     }
-    .cart-price-row{display:inline-flex; flex-direction:column; align-items:flex-start; gap:.12rem; vertical-align:middle;}
-    .cart-offer-line{display:inline-flex; align-items:center; gap:.4rem; flex-wrap:wrap;}
+    .cart-item-price{display:inline-flex; align-items:flex-start; gap:.35rem;}
+    .cart-quantity-prefix{line-height:1.3;}
+    .cart-price-row{display:inline-flex; flex-direction:column; align-items:flex-start; gap:.12rem;}
+    .cart-offer-line{display:inline-flex; align-items:center; gap:.4rem; flex-wrap:wrap; line-height:1.3;}
     .cart-old-price{text-decoration:line-through; color:#6c757d; font-size:.78rem; line-height:1.1;}
     .cart-new-price{color:#146c43; font-weight:700;}
     .cart-offer-badge{border-radius:999px; padding:.15rem .5rem; font-size:.72rem; font-weight:700; color:#fff; background:linear-gradient(120deg,#556b2f 0%, #20c997 100%);}
@@ -239,7 +241,7 @@
       item.className = "d-flex justify-content-between align-items-center mb-3";
       item.innerHTML = `
         <strong>${piatto.nome}</strong>
-        <span>${piatto.quantita} x ${piatto.in_offerta && piatto.prezzo_originale ? `<span class="cart-price-row"><span class="cart-offer-line"><span class="cart-new-price">€${Number(piatto.prezzo_unitario).toFixed(2)}</span><span class="cart-offer-badge">-${Number(piatto.sconto_percentuale || 0)}%</span></span><span class="cart-old-price">€${Number(piatto.prezzo_originale).toFixed(2)}</span></span>` : `€${Number(piatto.prezzo_unitario).toFixed(2)}`}</span>
+        <span>${piatto.in_offerta && piatto.prezzo_originale ? `<span class="cart-item-price"><span class="cart-quantity-prefix">${piatto.quantita} x</span><span class="cart-price-row"><span class="cart-offer-line"><span class="cart-new-price">€${Number(piatto.prezzo_unitario).toFixed(2)}</span><span class="cart-offer-badge">-${Number(piatto.sconto_percentuale || 0)}%</span></span><span class="cart-old-price">€${Number(piatto.prezzo_originale).toFixed(2)}</span></span></span>` : `${piatto.quantita} x €${Number(piatto.prezzo_unitario).toFixed(2)}`}</span>
         <button class="btn btn-danger btn-sm" onclick="rimuoviDalCarrello('${piatto._id}')">Elimina</button>`;
       container.appendChild(item);
     });
