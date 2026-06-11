@@ -74,6 +74,23 @@
     .cart-old-price{text-decoration:line-through; color:#6c757d; font-size:.86rem;}
     .cart-new-price{color:#146c43; font-weight:700;}
     .cart-offer-badge{border-radius:999px; padding:.15rem .5rem; font-size:.72rem; font-weight:700; color:#fff; background:linear-gradient(120deg,#556b2f 0%, #20c997 100%);}
+    .cart-total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      margin: 1rem 0 0.75rem;
+      padding: 0.85rem 1rem;
+      border: 1px solid rgba(47, 79, 111, 0.16);
+      border-radius: 0.5rem;
+      background: #f8fafc;
+      font-weight: 700;
+    }
+    .cart-total-price {
+      color: #146c43;
+      font-size: 1.1rem;
+      white-space: nowrap;
+    }
   </style>
     <link rel="icon" type="image/png" sizes="256x256" href="../assets/Favicon.png">
   <script src="../assets/auth.js"></script>
@@ -155,6 +172,30 @@
       messageBox.innerHTML = `<div class="alert alert-${tipo}" role="alert">${testo}</div>`;
     }
 
+    function getPrezzoUnitarioEffettivo(piatto) {
+      var prezzoUnitario = Number(piatto.prezzo_unitario);
+
+      if (Number.isFinite(prezzoUnitario)) {
+        return prezzoUnitario;
+      }
+
+      var prezzoOriginale = Number(piatto.prezzo_originale);
+      var scontoPercentuale = Number(piatto.sconto_percentuale || 0);
+
+      if (piatto.in_offerta && Number.isFinite(prezzoOriginale) && scontoPercentuale > 0) {
+        return Number((prezzoOriginale * (1 - scontoPercentuale / 100)).toFixed(2));
+      }
+
+      return Number.isFinite(prezzoOriginale) ? prezzoOriginale : 0;
+    }
+
+    function calcolaTotaleOrdine(piatti) {
+      return piatti.reduce(function (totale, piatto) {
+        var quantita = Number(piatto.quantita) || 0;
+        return totale + (quantita * getPrezzoUnitarioEffettivo(piatto));
+      }, 0);
+    }
+
     async function mostraCarrello() {
     var container = document.getElementById("cartItems");
     container.innerHTML = "";
@@ -201,8 +242,13 @@
         <button class="btn btn-danger btn-sm" onclick="rimuoviDalCarrello('${piatto._id}')">Elimina</button>`;
       container.appendChild(item);
     });
+    var totaleOrdine = calcolaTotaleOrdine(gruppiPerRistorante[ristoranteId]);
     var item = document.createElement("div");
       item.innerHTML = `
+        <div class="cart-total-row">
+          <span>Costo totale</span>
+          <span class="cart-total-price">€${totaleOrdine.toFixed(2)}</span>
+        </div>
         <br>
         <label class="me-3">
           <input type="radio" name="ritiro_${ristoranteId}" value="Ritiro in Ristorante" checked>
